@@ -1,16 +1,33 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUser extends Document {
+interface IUser extends Document {
+  name: string;
   email: string;
   password: string;
-  name: string;
   userType: 'personal' | 'organization';
-  organizationName?: string;
+  onboardingCompleted?: boolean;
+  onboardingData?: {
+    location?: {
+      country?: string;
+      city?: string;
+      zipCode?: string;
+    };
+    energyType?: string[];
+    propertyType?: string;
+    currentUsage?: number;
+    timeframe?: string;
+    goals?: string[];
+    completedAt?: Date;
+  };
   createdAt: Date;
-  updatedAt: Date;
 }
 
-const UserSchema: Schema = new Schema({
+const userSchema = new Schema<IUser>({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true,
+  },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -21,27 +38,34 @@ const UserSchema: Schema = new Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters long'],
-  },
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-    trim: true,
+    minlength: [6, 'Password must be at least 6 characters'],
   },
   userType: {
     type: String,
     enum: ['personal', 'organization'],
     required: [true, 'User type is required'],
   },
-  organizationName: {
-    type: String,
-    trim: true,
-    required: function(this: IUser) {
-      return this.userType === 'organization';
-    },
+  onboardingCompleted: {
+    type: Boolean,
+    default: false,
   },
-}, {
-  timestamps: true,
+  onboardingData: {
+    location: {
+      country: { type: String, default: '' },
+      city: { type: String, default: '' },
+      zipCode: { type: String, default: '' },
+    },
+    energyType: [{ type: String }],
+    propertyType: { type: String, default: '' },
+    currentUsage: { type: Number, default: 0 },
+    timeframe: { type: String, default: '' },
+    goals: [{ type: String }],
+    completedAt: { type: Date },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+export default mongoose.models.User || mongoose.model<IUser>('User', userSchema);

@@ -21,20 +21,11 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/models/*": [
-        "models/*"
-      ],
-      "@/components/*": [
-        "src/components/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/models/*": ["./models/*"]
     },
     "target": "ES2017"
   },
