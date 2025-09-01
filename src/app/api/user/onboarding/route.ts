@@ -10,7 +10,9 @@ export async function POST(request: NextRequest) {
   console.log('🔍 POST /api/user/onboarding called');
   
   try {
-    const { userId, onboardingData } = await request.json();
+  const { userId, onboardingData } = await request.json();
+  console.log('🔍 Received userId:', userId);
+  console.log('🔍 Received onboardingData:', JSON.stringify(onboardingData));
 
     // Verify authorization token
     const authHeader = request.headers.get('authorization');
@@ -41,25 +43,32 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     // Update user with onboarding data
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        $set: {
-          onboardingCompleted: true,
-          onboardingData: {
-            ...onboardingData,
-            completedAt: new Date()
+    let updatedUser = null;
+    try {
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            onboardingCompleted: true,
+            onboardingData: {
+              ...onboardingData,
+              completedAt: new Date()
+            }
           }
-        }
-      },
-      { new: true, runValidators: true }
-    ).select('-password');
+        },
+        { new: true, runValidators: true }
+      ).select('-password');
+      console.log('🔍 MongoDB update result:', updatedUser);
+    } catch (err) {
+      console.error('❌ MongoDB update error:', err);
+    }
 
     if (!updatedUser) {
+      console.error('❌ User not found or update failed for userId:', userId);
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    console.log('✅ Onboarding data saved successfully');
+    console.log('✅ Onboarding data saved successfully for userId:', userId);
 
     return NextResponse.json({
       success: true,
