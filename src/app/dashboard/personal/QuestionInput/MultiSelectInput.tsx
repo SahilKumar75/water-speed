@@ -8,7 +8,7 @@ interface MultiSelectInputProps {
 
 export default function MultiSelectInput({ question, value, onChange }: MultiSelectInputProps) {
   const handleMultiSelectChange = (optionValue: string, checked: boolean): void => {
-    const currentValues = (value as string[]) || [];
+    const currentValues = Array.isArray(value) ? value : [];
     if (checked) {
       onChange([...currentValues, optionValue]);
     } else {
@@ -19,7 +19,7 @@ export default function MultiSelectInput({ question, value, onChange }: MultiSel
   return (
     <div className="space-y-3">
       {question.options?.map((option: QuestionOption) => {
-        const isSelected = (value as string[])?.includes(option.value);
+        const isSelected = Array.isArray(value) && value.includes(option.value);
         return (
           <label
             key={option.value}

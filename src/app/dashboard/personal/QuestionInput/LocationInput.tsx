@@ -56,11 +56,9 @@ export default function LocationInput({ question, value, onChange }: LocationInp
   // ✅ CORRECT - Always ensure string values
   useEffect(() => {
     const locationValue = value as LocationAnswer;
-    if (locationValue) {
-      setCountryInput(locationValue.country || '');  // Fallback to empty string
-      setCityInput(locationValue.city || '');        // Fallback to empty string
-      setZipInput(locationValue.zipCode || '');      // Fallback to empty string
-    }
+    setCountryInput(locationValue?.country || '');
+    setCityInput(locationValue?.city || '');
+    setZipInput(locationValue?.zipCode || '');
   }, [value]);
 
 
@@ -82,18 +80,22 @@ export default function LocationInput({ question, value, onChange }: LocationInp
   // Filter countries based on input
   const filterCountries = (input: string) => {
     if (!input.trim()) return [];
-    return COUNTRIES.filter(country =>
+    const filtered = COUNTRIES.filter(country =>
       country.toLowerCase().includes(input.toLowerCase())
     ).slice(0, 8); // Limit to 8 suggestions
+    console.log('Filtered countries:', filtered); // Debug
+    return filtered;
   };
 
   // Filter cities based on selected country and input
   const filterCities = (input: string, selectedCountry: string) => {
     if (!input.trim()) return [];
     const cities = CITIES_BY_COUNTRY[selectedCountry] || [];
-    return cities.filter(city =>
+    const filtered = cities.filter(city =>
       city.toLowerCase().includes(input.toLowerCase())
     ).slice(0, 8); // Limit to 8 suggestions
+    console.log('Filtered cities:', filtered, 'for country:', selectedCountry); // Debug
+    return filtered;
   };
 
   // Handle country input change
@@ -129,10 +131,12 @@ export default function LocationInput({ question, value, onChange }: LocationInp
   // Update location value
   const updateLocationValue = (field: string, newValue: string) => {
     const currentValue = (value as LocationAnswer) || {};
-    onChange({
+    const updatedValue = {
       ...currentValue,
       [field]: newValue
-    });
+    };
+    console.log('Updating location value:', field, newValue, 'Full value:', updatedValue);
+    onChange(updatedValue);
   };
 
   // Handle suggestion selection - FIXED with onMouseDown
@@ -146,6 +150,12 @@ export default function LocationInput({ question, value, onChange }: LocationInp
     // Clear city when country changes
     setCityInput('');
     updateLocationValue('city', '');
+    
+    // Debug: log the updated state
+    setTimeout(() => {
+      console.log('Country input after selection:', countryInput);
+      console.log('Updated location value:', value);
+    }, 100);
   };
 
   const selectCity = (city: string) => {
@@ -154,6 +164,12 @@ export default function LocationInput({ question, value, onChange }: LocationInp
     setShowCitySuggestions(false);
     setCitySuggestions([]);
     updateLocationValue('city', city);
+    
+    // Debug: log the updated state
+    setTimeout(() => {
+      console.log('City input after selection:', cityInput);
+      console.log('Updated location value:', value);
+    }, 100);
   };
 
   return (
@@ -212,8 +228,10 @@ export default function LocationInput({ question, value, onChange }: LocationInp
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    onMouseDown={(e) => {
+                    onClick={(e) => {
+                      console.log('Country suggestion clicked:', country); // Debug
                       e.preventDefault();
+                      e.stopPropagation();
                       selectCountry(country);
                     }}
                     className="px-4 py-3 text-white hover:bg-white/10 cursor-pointer border-b border-white/10 last:border-b-0 transition-colors"
@@ -277,8 +295,10 @@ export default function LocationInput({ question, value, onChange }: LocationInp
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    onMouseDown={(e) => {
+                    onClick={(e) => {
+                      console.log('City suggestion clicked:', city); // Debug
                       e.preventDefault();
+                      e.stopPropagation();
                       selectCity(city);
                     }}
                     className="px-4 py-3 text-white hover:bg-white/10 cursor-pointer border-b border-white/10 last:border-b-0 transition-colors"

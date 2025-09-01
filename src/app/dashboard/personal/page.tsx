@@ -282,8 +282,8 @@ export default function PersonalOnboarding() {
         const storedUserRaw = localStorage.getItem('user');
         const storedUser = storedUserRaw ? JSON.parse(storedUserRaw) : null;
         const updatedUser = result.user
-          ? { ...storedUser, ...result.user, onboardingCompleted: true }
-          : { ...storedUser, onboardingCompleted: true };
+          ? { ...storedUser, ...result.user, onboardingCompleted: true, onboardingData: answers }
+          : { ...storedUser, onboardingCompleted: true, onboardingData: answers };
         localStorage.setItem('user', JSON.stringify(updatedUser));
       } catch (e) {
         console.warn('Could not update local user after onboarding:', e);

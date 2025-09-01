@@ -13,7 +13,7 @@ export default function RadioInput({ question, value, onChange }: RadioInputProp
         <label
           key={option.value}
           className={`block p-4 rounded-xl border-2 cursor-pointer transition-all ${
-            value === option.value
+            String(value || '') === option.value
               ? 'border-green-400 bg-green-400/10'
               : 'border-white/20 hover:border-white/40 hover:bg-white/5'
           }`}
@@ -23,7 +23,7 @@ export default function RadioInput({ question, value, onChange }: RadioInputProp
               type="radio"
               name={question.id}
               value={option.value}
-              checked={value === option.value}
+              checked={String(value || '') === option.value}
               onChange={(e) => onChange(e.target.value)}
               className="w-4 h-4 text-green-400 bg-transparent border-white/40 focus:ring-green-400/50"
             />

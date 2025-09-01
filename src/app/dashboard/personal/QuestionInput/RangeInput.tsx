@@ -7,7 +7,7 @@ interface RangeInputProps {
 }
 
 export default function RangeInput({ question, value, onChange }: RangeInputProps) {
-  const currentValue = (value as number) || question.min || 0;
+  const currentValue = Number(value) || question.min || 0;
   const currentRange = question.ranges?.find((r: { min: number; max: number; label: string }) => 
     currentValue >= r.min && currentValue <= r.max
   );
