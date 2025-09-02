@@ -17,7 +17,7 @@ export default function HomePage() {
   return (
     <>
   <Navigation onContactClick={() => setShowContact(true)} />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+  <div className="min-h-screen bg-primary">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
           {/* Ocean Wave Animation */}
@@ -34,7 +34,7 @@ export default function HomePage() {
             </svg>
           </div>
           {/* Background overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/20 to-slate-900/40 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/40 to-primary/80 z-10"></div>
           
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -45,20 +45,20 @@ export default function HomePage() {
                 transition={{ duration: 0.8 }}
               >
                 <div className="mb-6">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-400/20 border border-green-400/30 text-green-300 text-sm font-medium">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-medium">
                     <Wind className="w-4 h-4 mr-2" />
                     Renewable Energy Platform
                   </span>
                 </div>
                 
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#224b32] leading-tight">
                   Renewable energy solutions
-                  <span className="block text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text">
+                  <span className="block text-transparent bg-gradient-to-r from-primary to-primary bg-clip-text text-[#224b32]">
                     for a sustainable tomorrow.
                   </span>
                 </h1>
                 
-                <p className="text-xl text-white/70 mb-8 leading-relaxed max-w-xl">
+                <p className="text-xl text-[#224b32] mb-8 leading-relaxed max-w-xl">
                   With a passion for renewable energy, we specialize in wind and tidal power optimization, 
                   predictive analytics, and other eco-friendly technologies that harness the power of nature.
                 </p>
@@ -67,7 +67,7 @@ export default function HomePage() {
                   {loggedIn ? (
                     <Link href="/dashboard/personal/main">
                       <motion.button
-                        className="bg-gradient-to-r from-green-400 to-cyan-500 px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
+                        className="bg-[#c0e57b] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -79,7 +79,7 @@ export default function HomePage() {
                     <>
                       <Link href="/login">
                         <motion.button
-                          className="bg-gradient-to-r from-green-400 to-cyan-500 px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
+                          className="bg-[#c0e57b] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -89,7 +89,7 @@ export default function HomePage() {
                       </Link>
                       <Link href="/register">
                         <motion.button
-                          className="bg-white/10 backdrop-blur-lg border border-white/20 px-8 py-4 rounded-xl text-white font-semibold text-lg hover:bg-white/20 transition-all flex items-center justify-center group"
+                          className="bg-[#c0e57b] backdrop-blur-lg border border-[#224b32] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg hover:bg-[#c0e57b]/90 transition-all flex items-center justify-center group"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -108,7 +108,7 @@ export default function HomePage() {
 
           {/* Floating animation element */}
           <motion.div
-            className="absolute top-1/2 right-10 w-2 h-2 bg-green-400 rounded-full opacity-60"
+            className="absolute top-1/2 right-10 w-2 h-2 bg-primary rounded-full opacity-60"
             animate={{
               y: [0, -30, 0],
               scale: [1, 1.2, 1],
@@ -119,7 +119,7 @@ export default function HomePage() {
         </section>
 
         {/* Problem Statement & Mission */}
-        <section className="py-16 px-4 bg-white/5 backdrop-blur-sm">
+  <section className="py-16 px-4 bg-primary backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <motion.div
               className="text-center mb-8"
@@ -127,9 +127,9 @@ export default function HomePage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold text-white mb-6">Addressing Resource Depletion</h2>
-              <p className="text-white/70 text-lg leading-relaxed max-w-4xl mx-auto">
-                We are <span className="text-green-400">committed</span> to driving the transition to a <span className="text-green-400">cleaner</span>, more sustainable
+              <h2 className="text-3xl font-bold text-[#224b32] mb-6">Addressing Resource Depletion</h2>
+              <p className="text-[#224b32] text-lg leading-relaxed max-w-4xl mx-auto">
+                We are <span className="text-[#224b32] font-bold">committed</span> to driving the transition to a <span className="text-[#224b32] font-bold">cleaner</span>, more sustainable
                 future. Our mission is to provide innovative renewable energy solutions that
                 empower communities, businesses, and nations to <span className="text-green-400">reduce</span> their carbon footprint
                 while maximizing energy <span className="text-green-400">efficiency</span> and grid stability.
@@ -151,10 +151,10 @@ export default function HomePage() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  <div className="text-4xl md:text-5xl font-bold text-[#224b32] mb-2">
                     {stat.number}
                   </div>
-                  <div className="text-white/60 text-sm uppercase tracking-wide">
+                  <div className="text-[#224b32] text-sm uppercase tracking-wide">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -172,10 +172,10 @@ export default function HomePage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-[#224b32] mb-6">
                 Explore our solutions and see how
                 <br />
-                <span className="text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text">
+                <span className="text-transparent bg-gradient-to-r from-primary to-primary bg-clip-text text-[#224b32]">
                   you can be part of the change!
                 </span>
               </h2>
@@ -204,7 +204,7 @@ export default function HomePage() {
               ].map((solution, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300 group cursor-pointer"
+                  className="bg-[#c0e57b] backdrop-blur-xl border border-[#224b32] rounded-2xl p-8 hover:bg-[#c0e57b]/90 transition-all duration-300 group cursor-pointer"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -215,17 +215,17 @@ export default function HomePage() {
                     <div className="bg-gradient-to-r from-green-400 to-cyan-500 w-12 h-12 rounded-xl flex items-center justify-center">
                       <solution.icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-xs text-green-400 font-medium px-2 py-1 bg-green-400/10 rounded-full">
+                    <span className="text-xs text-[#224b32] font-medium px-2 py-1 bg-primary/10 rounded-full">
                       {solution.badge}
                     </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-green-400 transition-colors">
+                  <h3 className="text-xl font-semibold text-[#224b32] mb-3 group-hover:text-[#224b32] transition-colors">
                     {solution.title}
                   </h3>
-                  <p className="text-white/70 mb-4 leading-relaxed">
+                  <p className="text-[#224b32] mb-4 leading-relaxed">
                     {solution.description}
                   </p>
-                  <div className="flex items-center text-green-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center text-[#224b32] opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="text-sm font-medium">Learn More</span>
                     <ArrowRight className="w-4 h-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -236,7 +236,7 @@ export default function HomePage() {
         </section>
 
         {/* Data Insights Section */}
-        <section className="py-20 px-4 bg-white/5 backdrop-blur-sm">
+  <section className="py-20 px-4 bg-primary backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <motion.div
               className="text-center mb-16"
@@ -244,75 +244,49 @@ export default function HomePage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold text-white mb-4">Data-Driven Environmental Insights</h2>
-              <p className="text-white/70 text-lg max-w-3xl mx-auto">
+              <h2 className="text-4xl font-bold text-[#224b32] mb-4">Data-Driven Environmental Insights</h2>
+              <p className="text-[#224b32] text-lg max-w-3xl mx-auto">
                 Our advanced sensor data analysis provides deep understanding of environmental factors affecting energy output, 
                 enabling better site selection and optimized system design for future renewable energy projects.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: "Environmental Impact Reduction",
-                  description: "Switching to renewable energy with Wind Speed optimization was the best decision! Not only has it improved our energy independence, but our carbon emissions have also decreased by 60% while maintaining reliable power supply.",
-                  author: "Maria Rodriguez",
-                  role: "Sustainability Director, GreenTech Solutions"
-                },
-                {
-                  title: "Operational Excellence",
-                  description: "I'm proud to be part of the renewable energy movement. Thanks to Wind Speed's predictive maintenance, I'm contributing to a cleaner planet while enjoying 99.8% uptime and cost-effective operations!",
-                  author: "David Kim",
-                  role: "Operations Manager, Coastal Wind Farm"
-                }
-              ].map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8"
-                  initial={{ opacity: 0, x: index === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                >
-                  <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <h3 className="text-lg font-semibold text-green-400 mb-3">{testimonial.title}</h3>
-                  <blockquote className="text-white/80 leading-relaxed mb-6">
-                    "{testimonial.description}"
-                  </blockquote>
-                  <div className="border-t border-white/10 pt-4">
-                    <div className="font-semibold text-white">{testimonial.author}</div>
-                    <div className="text-white/60 text-sm">{testimonial.role}</div>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="w-full py-8 flex justify-center items-center">
+              {/* Free interactive map of India using OpenStreetMap, full width */}
+              <div className="w-full max-w-7xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-primary">
+                <iframe
+                  title="India Map"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=68.1766451354%2C6.751896%2C97.4025614766%2C37.285263&layer=mapnik"
+                  className="w-full h-[500px]"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
         {!loggedIn && (
-          <section className="py-20 px-4">
+    <section className="py-20 px-4">
             <motion.div
-              className="max-w-4xl mx-auto text-center bg-gradient-to-r from-green-400/10 to-cyan-500/10 backdrop-blur-xl border border-green-400/20 rounded-3xl p-12"
+              className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 to-primary/10 backdrop-blur-xl border border-primary/20 rounded-3xl p-12"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#224b32] mb-6">
                 Ready to optimize your renewable energy future?
               </h2>
-              <p className="text-white/70 mb-8 text-lg max-w-2xl mx-auto">
+              <p className="text-[#224b32] mb-8 text-lg max-w-2xl mx-auto">
                 Join the global movement towards sustainable energy. Let our AI-powered platform 
                 maximize your wind and tidal energy potential while reducing operational costs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/register">
                   <motion.button
-                    className="bg-gradient-to-r from-green-400 to-cyan-500 px-12 py-4 rounded-xl text-white font-semibold text-xl shadow-lg flex items-center justify-center"
+                    className="bg-gradient-to-r from-oliveMid to-oliveLight px-12 py-4 rounded-xl text-oliveDark font-semibold text-xl shadow-lg flex items-center justify-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -321,7 +295,7 @@ export default function HomePage() {
                   </motion.button>
                 </Link>
                 <motion.button
-                  className="bg-white/10 backdrop-blur-lg border border-white/20 px-12 py-4 rounded-xl text-white font-semibold text-xl hover:bg-white/20 transition-all"
+                  className="bg-olivePale/80 backdrop-blur-lg border border-oliveLight px-12 py-4 rounded-xl text-oliveDark font-semibold text-xl hover:bg-olivePale transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -333,28 +307,28 @@ export default function HomePage() {
         )}
 
         {/* Footer */}
-        <footer className="border-t border-white/10 py-16 px-4 bg-slate-900/50 relative">
+  <footer className="border-t border-oliveDark/10 py-16 px-4 bg-oliveDark/50 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8">
               <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="bg-gradient-to-r from-green-400 to-cyan-500 p-3 rounded-xl">
+                <div className="bg-gradient-to-r from-oliveMid to-oliveLight p-3 rounded-xl">
                   <Wind className="w-8 h-8 text-white" />
                 </div>
-                <span className="text-2xl font-bold text-white">Wind Speed</span>
+                <span className="text-2xl font-bold text-olivePale">Wind Speed</span>
               </div>
-              <p className="text-white/60 max-w-2xl mx-auto">
+              <p className="text-oliveLight max-w-2xl mx-auto">
                 Empowering the future of renewable energy through innovative 
                 predictive optimization and sustainable technology solutions.
               </p>
               <button
-                className="mt-6 px-6 py-2 bg-green-500 text-white rounded-lg font-semibold shadow hover:bg-green-600 transition-all"
+                className="mt-6 px-6 py-2 bg-oliveMid text-oliveDark rounded-lg font-semibold shadow hover:bg-oliveLight transition-all"
                 onClick={() => setShowContact(true)}
               >
                 Contact
               </button>
             </div>
-            <div className="border-t border-white/10 pt-8 text-center">
-              <p className="text-white/40">
+            <div className="border-t border-oliveDark/10 pt-8 text-center">
+              <p className="text-olivePale/60">
                 © 2025 Wind Speed. Built with passion for a sustainable tomorrow.
               </p>
             </div>

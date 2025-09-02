@@ -95,11 +95,11 @@ export default function PersonalMainDashboard() {
   };
 
   if (!user) return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div className="min-h-screen flex items-center justify-center bg-[#ecf4ef]">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="text-center bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-12 max-w-md mx-4"
+          className="text-center bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-3xl p-12 max-w-md mx-4"
       >
         <motion.div
           initial={{ scale: 0 }}
@@ -109,8 +109,8 @@ export default function PersonalMainDashboard() {
         >
           <Star className="w-10 h-10 text-white" />
         </motion.div>
-        <h2 className="text-white text-2xl font-bold mb-2">Loading your dashboard...</h2>
-        <p className="text-white/70">Please wait while we personalize your experience.</p>
+          <h2 className="text-[#224b32] text-2xl font-bold mb-2">Loading your dashboard...</h2>
+          <p className="text-[#224b32]/70">Please wait while we personalize your experience.</p>
       </motion.div>
     </div>
   );
@@ -166,19 +166,19 @@ export default function PersonalMainDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
-      <nav className="bg-white/10 backdrop-blur-xl border-b border-white/20 p-4">
+  <div className="min-h-screen bg-[#ecf4ef]">
+  <nav className="bg-white/10 backdrop-blur-xl border-b-2 border-[#244830]/40 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <Wind className="w-8 h-8 text-green-400 animate-spin-slow" />
-              <span className="text-white font-bold text-xl">Wind Speed</span>
+              <Wind className="w-8 h-8 text-[#c0e57b]" />
+              <span className="text-xl font-bold text-[#224b32]">Wind Speed</span>
             </a>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setEditMode((e) => !e)}
-              className={`flex items-center space-x-2 text-white/70 hover:text-white px-3 py-1 rounded transition ${editMode ? 'bg-green-400/20' : ''}`}
+          className={`flex items-center space-x-2 text-[#224b32] hover:text-[#224b32] px-4 py-2 rounded-full border border-[#224b32] transition-colors bg-[#c0e57b] hover:bg-[#c0e57b]/90 ${editMode ? 'bg-[#c0e57b]/40' : ''}`}
               disabled={saving}
             >
               {editMode ? <Save className="w-5 h-5" /> : <Pencil className="w-5 h-5" />}
@@ -186,7 +186,7 @@ export default function PersonalMainDashboard() {
             </button>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-2 text-white/70 hover:text-white"
+          className="flex items-center space-x-2 text-[#224b32] hover:text-[#224b32] px-4 py-2 rounded-full border border-[#224b32] transition-colors bg-[#c0e57b] hover:bg-[#c0e57b]/90"
             >
               <LogOut className="w-5 h-5" />
               <span>Logout</span>
@@ -195,9 +195,9 @@ export default function PersonalMainDashboard() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto p-8">
+  <div className="max-w-7xl mx-auto p-8 text-[#244830]">
         <motion.div
-          className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8"
+          className="bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-2xl p-8 text-[#244830]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -212,8 +212,8 @@ export default function PersonalMainDashboard() {
               <User className="w-8 h-8 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-3xl font-bold text-white mb-1">Hello, {user?.name || 'User'} 👋</h1>
-              <p className="text-white/70 text-lg">Here's your personalized dashboard</p>
+              <h1 className="text-3xl font-bold text-[#244830] mb-1">Hello, {user?.name || 'User'} 👋</h1>
+              <p className="text-[#244830]/70 text-lg">Here's your personalized dashboard</p>
               {editMode ? (
                 <div className="flex gap-2 mt-2">
                   <input
@@ -238,7 +238,7 @@ export default function PersonalMainDashboard() {
               ) : (
                 user?.onboardingData?.location && (
                   <motion.p
-                    className="text-white/50 text-sm mt-1"
+                    className="text-[#244830]/50 text-sm mt-1"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
@@ -254,38 +254,38 @@ export default function PersonalMainDashboard() {
 
           <div className="grid md:grid-cols-3 gap-6">
             <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg"
+              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <MapPin className="w-6 h-6 text-green-400 animate-bounce" />
-                <h3 className="text-white font-semibold">Location Analysis</h3>
+                <h3 className="text-[#244830] font-semibold">Location Analysis</h3>
               </div>
               {editMode ? (
                 <div className="flex gap-2">
                   <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
+                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
                     placeholder="City"
                     value={editData?.location?.city || ''}
                     onChange={e => handleEditChange('location', { ...editData?.location, city: e.target.value })}
                   />
                   <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
+                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
                     placeholder="Country"
                     value={editData?.location?.country || ''}
                     onChange={e => handleEditChange('location', { ...editData?.location, country: e.target.value })}
                   />
                   <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
+                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
                     placeholder="ZIP"
                     value={editData?.location?.zipCode || ''}
                     onChange={e => handleEditChange('location', { ...editData?.location, zipCode: e.target.value })}
                   />
                 </div>
               ) : (
-                <p className="text-white/70">
+                <p className="text-[#244830]/70">
                   {user?.onboardingData?.location?.country
                     ? `Based on conditions near ${user.onboardingData.location.city || 'your area'}, ${user.onboardingData.location.country}.`
                     : 'Your renewable energy potential analysis is complete.'}
@@ -294,14 +294,14 @@ export default function PersonalMainDashboard() {
             </motion.div>
 
             <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg"
+              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <Zap className="w-6 h-6 text-yellow-400 animate-pulse" />
-                <h3 className="text-white font-semibold">Efficiency Recommendations</h3>
+                <h3 className="text-[#244830] font-semibold">Efficiency Recommendations</h3>
               </div>
               {editMode ? (
                 <div>
@@ -316,7 +316,7 @@ export default function PersonalMainDashboard() {
                     <option value="farm">Farm/Rural Property</option>
                     <option value="business">Small Business</option>
                   </select>
-                  <label className="block text-white/70 text-sm mb-1">Energy Types</label>
+                  <label className="block text-[#244830]/70 text-sm mb-1">Energy Types</label>
                   <div className="flex flex-wrap gap-2 mb-2">
                     {['wind','tidal','solar','hydroelectric'].map(type => (
                       <button
@@ -338,7 +338,7 @@ export default function PersonalMainDashboard() {
                   </div>
                 </div>
               ) : (
-                <p className="text-white/70">
+                <p className="text-[#244830]/70">
                   {Array.isArray(user?.onboardingData?.energyType) && user.onboardingData!.energyType!.length > 0
                     ? `Focusing on ${user.onboardingData!.energyType!.join(', ')} for your ${user?.onboardingData?.propertyType || 'property'}.`
                     : 'Personalized suggestions based on your profile.'}
@@ -347,14 +347,14 @@ export default function PersonalMainDashboard() {
             </motion.div>
 
             <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg"
+              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <TrendingUp className="w-6 h-6 text-cyan-400 animate-float" />
-                <h3 className="text-white font-semibold">Savings Projection</h3>
+                <h3 className="text-[#244830] font-semibold">Savings Projection</h3>
               </div>
               {editMode ? (
                 <div>
@@ -378,7 +378,7 @@ export default function PersonalMainDashboard() {
                   </select>
                 </div>
               ) : (
-                <p className="text-white/70">
+                <p className="text-[#244830]/70">
                   {typeof user?.onboardingData?.currentUsage === 'number'
                     ? `Estimated ROI based on ${user.onboardingData!.currentUsage} kWh/month and timeline '${user?.onboardingData?.timeframe || 'N/A'}'.`
                     : 'Estimated cost savings and ROI calculations.'}
@@ -389,12 +389,12 @@ export default function PersonalMainDashboard() {
 
           {editMode ? (
             <motion.div
-              className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg"
+              className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
             >
-              <h3 className="text-white font-semibold mb-3">Your Goals</h3>
+              <h3 className="text-[#244830] font-semibold mb-3">Your Goals</h3>
               <div className="flex flex-wrap gap-2 mb-2">
                 {[
                   { value: 'cost_savings', label: 'Reduce Energy Costs' },
@@ -424,12 +424,12 @@ export default function PersonalMainDashboard() {
           ) : (
             Array.isArray(user?.onboardingData?.goals) && user!.onboardingData!.goals!.length > 0 && (
               <motion.div
-                className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg"
+                className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
               >
-                <h3 className="text-white font-semibold mb-3">Your Goals</h3>
+                <h3 className="text-[#244830] font-semibold mb-3">Your Goals</h3>
                 <div className="flex flex-wrap gap-2">
                   {user!.onboardingData!.goals!.map((g) => (
                     <span key={g} className="px-3 py-1 rounded-full bg-gradient-to-r from-green-400 to-cyan-400 text-white/90 text-sm border border-white/20 shadow">

@@ -7,16 +7,24 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        water: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-        }
+        colors: {
+          water: {
+            50: '#f0f9ff',
+            100: '#e0f2fe',
+            400: '#38bdf8',
+            500: '#0ea5e9',
+            600: '#0284c7',
+            700: '#0369a1',
+            800: '#075985',
+          },
+  primary: '#ecf4ef',
+    navy: '#232946',
+    white: '#F4F4F9',
+    yellow: '#FEE440',
+    lavender: '#B8C1EC',
+    gray: '#E7E7E7',
+    pink: '#FF6F91',
+    green: '#43D8C9',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

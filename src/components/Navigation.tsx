@@ -31,7 +31,7 @@ const Navigation: React.FC<NavigationProps> = ({ onContactClick }) => {
       ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20">
+  <nav className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b-2 border-[#224b32]/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div 
@@ -42,7 +42,7 @@ const Navigation: React.FC<NavigationProps> = ({ onContactClick }) => {
             <div className="bg-gradient-to-r from-green-400 to-cyan-400 p-2 rounded-lg">
               <Wind className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">Wind Speed</span>
+              <span className="text-xl font-bold text-[#224b32]">Wind Speed</span>
           </motion.div>
           
           <div className="hidden md:flex items-center space-x-8">
@@ -50,13 +50,13 @@ const Navigation: React.FC<NavigationProps> = ({ onContactClick }) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-white/80 hover:text-white transition-colors"
+                  className="text-[#224b32] hover:text-[#224b32] transition-colors rounded-full px-4 py-2 hover:bg-[#c0e57b]"
               >
                 {item.label}
               </Link>
             ))}
             <button
-              className="text-white/80 hover:text-white transition-colors px-2 py-1"
+                className="text-[#224b32] hover:text-[#224b32] transition-colors rounded-full px-4 py-2 hover:bg-[#c0e57b]"
               type="button"
               onClick={onContactClick}
             >
@@ -69,11 +69,11 @@ const Navigation: React.FC<NavigationProps> = ({ onContactClick }) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={
-                  item.variant === 'primary'
-                    ? 'bg-white/20 backdrop-blur-lg border border-white/30 px-6 py-2 rounded-lg text-white font-medium hover:bg-white/30 transition-all'
-                    : 'px-4 py-2 text-white/80 hover:text-white transition-colors'
-                }
+                  className={
+                    item.variant === 'primary'
+                      ? 'bg-white/20 backdrop-blur-lg border border-white/30 px-6 py-2 rounded-lg text-[#224b32] font-medium hover:bg-[#c0e57b] hover:text-[#224b32] transition-all rounded-full'
+                      : 'px-4 py-2 text-[#224b32] hover:text-[#224b32] transition-colors rounded-full hover:bg-[#c0e57b]'
+                  }
               >
                 {item.label}
               </Link>
