@@ -6,16 +6,19 @@ import { motion } from 'framer-motion';
 import { Wind } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Navigation() {
+interface NavigationProps {
+  onContactClick?: () => void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ onContactClick }) => {
   const [loggedIn, setLoggedIn] = React.useState(false);
   React.useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
   }, []);
   const primaryNavItems = [
     { label: 'Solutions', href: '#solutions' },
-    { label: 'Technology', href: '#technology' },
+    { label: 'Technology', href: '/technology' },
     { label: 'Insights', href: '#insights' },
-    { label: 'Contact', href: '#contact' },
   ];
 
   const actionNavItems = loggedIn
@@ -52,6 +55,13 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+            <button
+              className="text-white/80 hover:text-white transition-colors px-2 py-1"
+              type="button"
+              onClick={onContactClick}
+            >
+              Contact
+            </button>
           </div>
           
           <div className="flex space-x-4">
@@ -74,3 +84,5 @@ export default function Navigation() {
     </nav>
   );
 }
+
+export default Navigation;

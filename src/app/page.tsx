@@ -1,6 +1,7 @@
 
 'use client';
 import React from 'react';
+import ContactModal from '@/components/ContactModal';
 
 import { motion } from 'framer-motion';
 import { Wind, Zap, Shield, Users, ArrowRight, CheckCircle, Star, TrendingUp, BarChart3, Settings } from 'lucide-react';
@@ -9,17 +10,31 @@ import Navigation from '@/components/Navigation';
 
 export default function HomePage() {
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [showContact, setShowContact] = React.useState(false);
   React.useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
   }, []);
   return (
     <>
-      <Navigation />
+  <Navigation onContactClick={() => setShowContact(true)} />
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+          {/* Ocean Wave Animation */}
+          <div className="absolute left-0 right-0 bottom-0 h-[320px] min-w-full pointer-events-none z-0">
+            <svg className="absolute left-0 w-full h-full" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <path fill="#38bdf8" fillOpacity="0.3">
+                <animate attributeName="d" dur="6s" repeatCount="indefinite"
+                  values="M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                  M0,192L60,186.7C120,181,240,160,360,154.7C480,149,600,171,720,186.7C840,203,960,213,1080,202.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                  M0,224L60,213.3C120,203,240,181,360,160C480,139,600,117,720,128C840,139,960,181,1080,186.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                  M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+                />
+              </path>
+            </svg>
+          </div>
           {/* Background overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/20 to-slate-900/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/20 to-slate-900/40 z-10"></div>
           
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -87,31 +102,7 @@ export default function HomePage() {
                 </div>
               </motion.div>
 
-              {/* Right Content - Key Metrics Cards */}
-              <motion.div
-                className="space-y-4"
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-                  <h3 className="text-white font-semibold text-lg mb-2">Predictive Optimization</h3>
-                  <p className="text-white/70 mb-4">Real-time wind and tidal pattern forecasting for maximum power generation.</p>
-                  <div className="flex items-center text-green-400">
-                    <TrendingUp className="w-5 h-5 mr-2" />
-                    <span className="text-sm">35% Efficiency Boost</span>
-                  </div>
-                </div>
-                
-                <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-                  <h3 className="text-white font-semibold text-lg mb-2">Enhanced Reliability</h3>
-                  <p className="text-white/70 mb-4">Complementary wind and tidal energy for stable power supply.</p>
-                  <div className="flex items-center text-green-400">
-                    <Shield className="w-5 h-5 mr-2" />
-                    <span className="text-sm">99.2% Grid Stability</span>
-                  </div>
-                </div>
-              </motion.div>
+              {/* Right Content removed as requested */}
             </div>
           </div>
 
@@ -342,7 +333,7 @@ export default function HomePage() {
         )}
 
         {/* Footer */}
-        <footer className="border-t border-white/10 py-16 px-4 bg-slate-900/50">
+        <footer className="border-t border-white/10 py-16 px-4 bg-slate-900/50 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8">
               <div className="flex items-center justify-center space-x-3 mb-4">
@@ -355,14 +346,21 @@ export default function HomePage() {
                 Empowering the future of renewable energy through innovative 
                 predictive optimization and sustainable technology solutions.
               </p>
+              <button
+                className="mt-6 px-6 py-2 bg-green-500 text-white rounded-lg font-semibold shadow hover:bg-green-600 transition-all"
+                onClick={() => setShowContact(true)}
+              >
+                Contact
+              </button>
             </div>
-            
             <div className="border-t border-white/10 pt-8 text-center">
               <p className="text-white/40">
                 © 2025 Wind Speed. Built with passion for a sustainable tomorrow.
               </p>
             </div>
           </div>
+          {/* Contact Modal */}
+          <ContactModal open={showContact} onClose={() => setShowContact(false)} />
         </footer>
       </div>
     </>
