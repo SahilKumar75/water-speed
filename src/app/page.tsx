@@ -1,4 +1,6 @@
+
 'use client';
+import React from 'react';
 
 import { motion } from 'framer-motion';
 import { Wind, Zap, Shield, Users, ArrowRight, CheckCircle, Star, TrendingUp, BarChart3, Settings } from 'lucide-react';
@@ -6,10 +8,13 @@ import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 
 export default function HomePage() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  React.useEffect(() => {
+    setLoggedIn(!!localStorage.getItem('token'));
+  }, []);
   return (
     <>
       <Navigation />
-      
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
@@ -44,24 +49,41 @@ export default function HomePage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/register">
-                    <motion.button
-                      className="bg-gradient-to-r from-green-400 to-cyan-500 px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Start Your Journey
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
-                  </Link>
-                  
-                  <motion.button
-                    className="bg-white/10 backdrop-blur-lg border border-white/20 px-8 py-4 rounded-xl text-white font-semibold text-lg hover:bg-white/20 transition-all"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Explore Technology
-                  </motion.button>
+                  {loggedIn ? (
+                    <Link href="/dashboard/personal/main">
+                      <motion.button
+                        className="bg-gradient-to-r from-green-400 to-cyan-500 px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Go to Dashboard
+                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </motion.button>
+                    </Link>
+                  ) : (
+                    <>
+                      <Link href="/login">
+                        <motion.button
+                          className="bg-gradient-to-r from-green-400 to-cyan-500 px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          Login
+                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                      </Link>
+                      <Link href="/register">
+                        <motion.button
+                          className="bg-white/10 backdrop-blur-lg border border-white/20 px-8 py-4 rounded-xl text-white font-semibold text-lg hover:bg-white/20 transition-all flex items-center justify-center group"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          Get Started
+                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </motion.div>
 
@@ -281,41 +303,43 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4">
-          <motion.div
-            className="max-w-4xl mx-auto text-center bg-gradient-to-r from-green-400/10 to-cyan-500/10 backdrop-blur-xl border border-green-400/20 rounded-3xl p-12"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to optimize your renewable energy future?
-            </h2>
-            <p className="text-white/70 mb-8 text-lg max-w-2xl mx-auto">
-              Join the global movement towards sustainable energy. Let our AI-powered platform 
-              maximize your wind and tidal energy potential while reducing operational costs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register">
+        {!loggedIn && (
+          <section className="py-20 px-4">
+            <motion.div
+              className="max-w-4xl mx-auto text-center bg-gradient-to-r from-green-400/10 to-cyan-500/10 backdrop-blur-xl border border-green-400/20 rounded-3xl p-12"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Ready to optimize your renewable energy future?
+              </h2>
+              <p className="text-white/70 mb-8 text-lg max-w-2xl mx-auto">
+                Join the global movement towards sustainable energy. Let our AI-powered platform 
+                maximize your wind and tidal energy potential while reducing operational costs.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/register">
+                  <motion.button
+                    className="bg-gradient-to-r from-green-400 to-cyan-500 px-12 py-4 rounded-xl text-white font-semibold text-xl shadow-lg flex items-center justify-center"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Start Optimizing
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </motion.button>
+                </Link>
                 <motion.button
-                  className="bg-gradient-to-r from-green-400 to-cyan-500 px-12 py-4 rounded-xl text-white font-semibold text-xl shadow-lg flex items-center justify-center"
+                  className="bg-white/10 backdrop-blur-lg border border-white/20 px-12 py-4 rounded-xl text-white font-semibold text-xl hover:bg-white/20 transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Start Optimizing
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  Schedule Consultation
                 </motion.button>
-              </Link>
-              <motion.button
-                className="bg-white/10 backdrop-blur-lg border border-white/20 px-12 py-4 rounded-xl text-white font-semibold text-xl hover:bg-white/20 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Schedule Consultation
-              </motion.button>
-            </div>
-          </motion.div>
-        </section>
+              </div>
+            </motion.div>
+          </section>
+        )}
 
         {/* Footer */}
         <footer className="border-t border-white/10 py-16 px-4 bg-slate-900/50">

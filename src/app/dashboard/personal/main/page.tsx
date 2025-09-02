@@ -170,8 +170,10 @@ export default function PersonalMainDashboard() {
       <nav className="bg-white/10 backdrop-blur-xl border-b border-white/20 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Wind className="w-8 h-8 text-green-400 animate-spin-slow" />
-            <span className="text-white font-bold text-xl">Wind Speed</span>
+            <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Wind className="w-8 h-8 text-green-400 animate-spin-slow" />
+              <span className="text-white font-bold text-xl">Wind Speed</span>
+            </a>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -439,7 +441,8 @@ export default function PersonalMainDashboard() {
             )
           )}
 
-          {/* AI Suggestion Section */}
+          {/*
+          AI Suggestion Section
           <motion.div
             className="mt-8 bg-gradient-to-r from-green-400/10 to-cyan-400/10 border border-green-400/20 rounded-2xl p-6 shadow-lg"
             initial={{ opacity: 0, y: 20 }}
@@ -462,6 +465,7 @@ export default function PersonalMainDashboard() {
               <p className="text-white/80 text-base leading-relaxed">{aiSuggestion}</p>
             )}
           </motion.div>
+          */}
         </motion.div>
       </div>
 

@@ -16,7 +16,7 @@ def main():
     prompt = f"Suggest renewable energy recommendations for: {json.dumps(onboarding)}"
     result = summarizer(prompt, max_length=60, min_length=20, do_sample=False)
     suggestion = result[0]['summary_text'] if result else "No suggestion generated."
-    print(json.dumps({"suggestion": suggestion}))
+    print(json.dumps({"suggestion": suggestion}), flush=True)
 
 if __name__ == "__main__":
     main()

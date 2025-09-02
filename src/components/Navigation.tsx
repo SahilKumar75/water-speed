@@ -1,10 +1,16 @@
+
 'use client';
+import React from 'react';
 
 import { motion } from 'framer-motion';
 import { Wind } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Navigation() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  React.useEffect(() => {
+    setLoggedIn(!!localStorage.getItem('token'));
+  }, []);
   const primaryNavItems = [
     { label: 'Solutions', href: '#solutions' },
     { label: 'Technology', href: '#technology' },
@@ -12,10 +18,14 @@ export default function Navigation() {
     { label: 'Contact', href: '#contact' },
   ];
 
-  const actionNavItems = [
-    { label: 'Login', href: '/login', variant: 'link' as const },
-    { label: 'Get Started', href: '/register', variant: 'primary' as const },
-  ];
+  const actionNavItems = loggedIn
+    ? [
+        { label: 'Dashboard', href: '/dashboard/personal/main', variant: 'primary' as const },
+      ]
+    : [
+        { label: 'Login', href: '/login', variant: 'link' as const },
+        { label: 'Get Started', href: '/register', variant: 'primary' as const },
+      ];
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20">
