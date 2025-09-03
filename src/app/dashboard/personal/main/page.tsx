@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Wind, User, LogOut, MapPin, Zap, TrendingUp, Settings, Star, Pencil, Save } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -39,6 +40,30 @@ export default function PersonalMainDashboard() {
   const [chatMessages, setChatMessages] = useState<{ sender: 'user' | 'ai'; text: string }[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [chatLoading, setChatLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  // Generate/load sessionId for anonymous users
+  useEffect(() => {
+    if (!user) {
+      let sid = localStorage.getItem('chatSessionId');
+      if (!sid) {
+        sid = uuidv4();
+        localStorage.setItem('chatSessionId', sid);
+      }
+      setSessionId(sid || '');
+    } else {
+      setSessionId(null);
+    }
+  }, [user]);
+  // Fetch chat history on load
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const params = user ? `userId=${user.id}` : `sessionId=${sessionId}`;
+      const res = await fetch(`/api/chat?${params}`);
+      const data = await res.json();
+      if (data.messages) setChatMessages(data.messages);
+    };
+    if (user || sessionId) fetchHistory();
+  }, [user, sessionId]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -75,7 +100,8 @@ export default function PersonalMainDashboard() {
     if (!chatInput.trim() || !user?.onboardingData) return;
     setChatLoading(true);
     // Add user message
-    setChatMessages((prev) => [...prev, { sender: 'user', text: chatInput }]);
+  const newMessages = [...chatMessages, { sender: 'user' as 'user', text: chatInput }];
+  setChatMessages(newMessages);
     try {
       const res = await fetch('/api/ml/suggest', {
         method: 'POST',
@@ -87,9 +113,33 @@ export default function PersonalMainDashboard() {
         const data = await res.json();
         reply = data.suggestion || reply;
       }
-      setChatMessages((prev) => [...prev, { sender: 'ai', text: reply }]);
+  const updatedMessages = [...newMessages, { sender: 'ai' as 'ai', text: reply }];
+  setChatMessages(updatedMessages);
+      // Persist chat history
+      const payload = {
+        userId: user ? user.id : null,
+        sessionId: !user ? sessionId : null,
+        messages: updatedMessages,
+      };
+      await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
     } catch {
-      setChatMessages((prev) => [...prev, { sender: 'ai', text: 'Could not generate suggestions.' }]);
+  const updatedMessages = [...newMessages, { sender: 'ai' as 'ai', text: 'Could not generate suggestions.' }];
+  setChatMessages(updatedMessages);
+      // Persist failed chat history
+      const payload = {
+        userId: user ? user.id : null,
+        sessionId: !user ? sessionId : null,
+        messages: updatedMessages,
+      };
+      await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
     }
     setChatInput('');
     setChatLoading(false);
@@ -174,7 +224,7 @@ export default function PersonalMainDashboard() {
         >
           <div className="flex items-center space-x-4 mb-6">
             <motion.div
-              className="bg-gradient-to-r from-green-400 to-cyan-500 p-3 rounded-xl"
+              className="bg-gradient-to-r from-accent to-bg p-3 rounded-xl"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 120 }}
@@ -402,7 +452,7 @@ export default function PersonalMainDashboard() {
                 <h3 className="text-[#244830] font-semibold mb-3">Your Goals</h3>
                 <div className="flex flex-wrap gap-2">
                   {user!.onboardingData!.goals!.map((g) => (
-                    <span key={g} className="px-3 py-1 rounded-full bg-gradient-to-r from-green-400 to-cyan-400 text-white/90 text-sm border border-white/20 shadow">
+                    <span key={g} className="px-3 py-1 rounded-full bg-gradient-to-r from-accent to-bg text-[#224b32] text-sm border border-white/20 shadow">
                       {g}
                     </span>
                   ))}
@@ -416,7 +466,7 @@ export default function PersonalMainDashboard() {
           <div className="flex-1 overflow-y-auto">
             {aiSuggestion && (
               <motion.div
-                className="mt-8 bg-gradient-to-r from-green-400/10 to-cyan-400/10 border border-green-400/20 rounded-2xl p-6 shadow-lg"
+                className="mt-8 bg-gradient-to-r from-accent/10 to-bg/10 border border-accent/20 rounded-2xl p-6 shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1 }}
@@ -452,7 +502,7 @@ export default function PersonalMainDashboard() {
               )}
               {chatMessages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl shadow ${msg.sender === 'user' ? 'bg-white text-[#143726]' : 'bg-gradient-to-r from-green-400/20 to-cyan-400/20 text-[#224b32] border border-green-400/30'}`}>
+                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl shadow ${msg.sender === 'user' ? 'bg-white text-[#143726]' : 'bg-gradient-to-r from-accent/20 to-bg/20 text-[#224b32] border border-accent/30'}`}>
                     {msg.sender === 'ai' && (
                       <span className="font-bold text-green-600 mr-2">Wind Speed:</span>
                     )}
@@ -462,7 +512,7 @@ export default function PersonalMainDashboard() {
               ))}
               {chatLoading && (
                 <div className="flex justify-start">
-                  <div className="max-w-[70%] px-4 py-2 rounded-2xl shadow bg-gradient-to-r from-green-400/20 to-cyan-400/20 text-[#224b32] border border-green-400/30 animate-pulse">
+                  <div className="max-w-[70%] px-4 py-2 rounded-2xl shadow bg-gradient-to-r from-accent/20 to-bg/20 text-[#224b32] border border-accent/30 animate-pulse">
                     <span className="font-bold text-green-600 mr-2">Wind Speed:</span>
                     Generating reply...
                   </div>

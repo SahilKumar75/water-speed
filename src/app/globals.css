@@ -1,3 +1,5 @@
+
+/* NOTE: @tailwind and @apply are valid Tailwind/PostCSS at-rules. Ignore editor warnings. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,9 +27,7 @@
     @apply bg-gradient-to-r from-green-400 to-cyan-400;
   }
 
-  .text-gradient {
-    @apply bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent;
-  }
+  /* Use these classes in your JSX: bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent */
 }
 
 @layer utilities {

@@ -30,7 +30,7 @@ const DashboardPanels: React.FC<DashboardPanelsProps> = ({ user, editMode, editD
       >
         <div className="flex items-center space-x-4 mb-6">
           <motion.div
-            className="bg-gradient-to-r from-green-400 to-cyan-500 p-3 rounded-xl"
+            className="bg-gradient-to-r from-accent to-bg p-3 rounded-xl"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 120 }}
@@ -82,7 +82,7 @@ const DashboardPanels: React.FC<DashboardPanelsProps> = ({ user, editMode, editD
         {user?.aiSuggestion && (
           <motion.div
             ref={aiSuggestionRef}
-            className="mt-8 bg-gradient-to-r from-green-400/10 to-cyan-400/10 border border-green-400/20 rounded-2xl p-6 shadow-lg max-h-64 overflow-y-auto"
+            className="mt-8 bg-gradient-to-r from-accent/10 to-bg/10 border border-accent/20 rounded-2xl p-6 shadow-lg max-h-64 overflow-y-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
