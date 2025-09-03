@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
       error += chunk;
     }
 
-    // Improved error logging: always return stderr if present
-    if (error) {
+    // Only treat stderr as error if it contains real error keywords
+    const errorKeywords = ['Traceback', 'Error', 'Exception'];
+    const isRealError = error && errorKeywords.some(k => error.includes(k));
+    if (isRealError) {
       console.error('Python stderr:', error);
       return NextResponse.json({ error: error, result }, { status: 500 });
     }

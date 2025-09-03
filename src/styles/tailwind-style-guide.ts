@@ -65,5 +65,29 @@ export const text = {
   gradient: 'text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text',
 };
 
+export const dashboardColors = {
+  background: 'bg-dashboard-bg',
+  accent: 'bg-dashboard-accent',
+  dark: 'bg-dashboard-dark',
+  green: 'bg-dashboard-green',
+  cyan: 'bg-dashboard-cyan',
+  yellow: 'bg-dashboard-yellow',
+  white: 'bg-dashboard-white',
+  gray: 'bg-dashboard-gray',
+};
+
+export const dashboardTextColors = {
+  dark: 'text-dashboard-dark',
+  accent: 'text-dashboard-accent',
+  green: 'text-dashboard-green',
+  cyan: 'text-dashboard-cyan',
+  yellow: 'text-dashboard-yellow',
+  white: 'text-dashboard-white',
+  gray: 'text-dashboard-gray',
+};
+
 // Usage example in a component:
 // <div className={`${colors.primaryGradient} ${effects.rounded2xl} ${effects.shadow}`}>...</div>
+// <div className={dashboardColors.background}>
+//   <h1 className={dashboardTextColors.dark}>Hello Dashboard</h1>
+// </div>

@@ -1,3 +1,4 @@
+// ...existing code...
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -23,6 +24,10 @@ interface User {
 }
 
 export default function PersonalMainDashboard() {
+  // General handler for edit changes
+  const handleEditChange = (field: string, value: any) => {
+    setEditData((prev) => ({ ...prev, [field]: value }));
+  };
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -30,6 +35,10 @@ export default function PersonalMainDashboard() {
   const [saving, setSaving] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
+  // Chat state for right panel
+  const [chatMessages, setChatMessages] = useState<{ sender: 'user' | 'ai'; text: string }[]>([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -61,32 +70,30 @@ export default function PersonalMainDashboard() {
       });
   }, [router]);
 
-  // Fetch AI suggestion when user data is loaded
-  useEffect(() => {
-    if (user && user.onboardingData) {
-      setAiLoading(true);
-      setAiSuggestion(null);
-      fetch('/api/ml/suggest', {
+  // Chat: handle user sending a message
+  const handleSendChat = async () => {
+    if (!chatInput.trim() || !user?.onboardingData) return;
+    setChatLoading(true);
+    // Add user message
+    setChatMessages((prev) => [...prev, { sender: 'user', text: chatInput }]);
+    try {
+      const res = await fetch('/api/ml/suggest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ onboardingData: user.onboardingData }),
-      })
-        .then(async (res) => {
-          if (!res.ok) {
-            setAiSuggestion('Could not generate suggestions.');
-            setAiLoading(false);
-            return;
-          }
-          const data = await res.json();
-          setAiSuggestion(data.suggestion);
-          setAiLoading(false);
-        })
-        .catch(() => {
-          setAiSuggestion('Could not generate suggestions.');
-          setAiLoading(false);
-        });
+        body: JSON.stringify({ onboardingData: user.onboardingData, message: chatInput }),
+      });
+      let reply = 'Could not generate suggestions.';
+      if (res.ok) {
+        const data = await res.json();
+        reply = data.suggestion || reply;
+      }
+      setChatMessages((prev) => [...prev, { sender: 'ai', text: reply }]);
+    } catch {
+      setChatMessages((prev) => [...prev, { sender: 'ai', text: 'Could not generate suggestions.' }]);
     }
-  }, [user]);
+    setChatInput('');
+    setChatLoading(false);
+  };
 
   const handleLogout = (): void => {
     localStorage.removeItem('token');
@@ -124,47 +131,6 @@ export default function PersonalMainDashboard() {
     }));
   };
 
-  // General handler
-  const handleEditChange = (field: string, value: any) => {
-    setEditData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Save changes to MongoDB
-  const handleSave = async () => {
-    setSaving(true);
-    const token = localStorage.getItem('token');
-    if (!token || !user) return;
-    // Ensure all fields are present
-    const completeData = {
-      location: editData?.location || { country: '', city: '', zipCode: '' },
-      energyType: editData?.energyType || [],
-      propertyType: editData?.propertyType || '',
-      currentUsage: editData?.currentUsage || 0,
-      timeframe: editData?.timeframe || '',
-      goals: editData?.goals || [],
-    };
-    try {
-      const payload = {
-        userId: user.id,
-        onboardingData: completeData,
-      };
-      const response = await fetch('/api/user/onboarding', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error('Failed to update');
-      setEditMode(false);
-      setUser((prev) => prev ? { ...prev, onboardingData: completeData } : prev);
-    } catch (e) {
-      alert('Could not save changes.');
-    }
-    setSaving(false);
-  };
-
   return (
     <div className="min-h-screen bg-[#ecf4ef] flex flex-col">
       {/* Top Navigation Bar - stretches end to end */}
@@ -199,9 +165,9 @@ export default function PersonalMainDashboard() {
       <div className="flex flex-row flex-1 min-h-0">
         {/* Left Panel: Dashboard */}
         <div className="w-full md:w-2/3 lg:w-3/5 border-r border-[#244830]/20 min-h-full flex flex-col">
-          <div className="max-w-7xl mx-auto p-8 text-[#244830]">
+          <div className="max-w-7xl mx-auto p-8 text-[#244830] flex flex-col h-full">
         <motion.div
-          className="bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-2xl p-8 text-[#244830]"
+          className="bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-2xl p-8 text-[#244830] flex flex-col h-full"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -445,31 +411,24 @@ export default function PersonalMainDashboard() {
             )
           )}
 
-          {/*
-          AI Suggestion Section
-          <motion.div
-            className="mt-8 bg-gradient-to-r from-green-400/10 to-cyan-400/10 border border-green-400/20 rounded-2xl p-6 shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-          >
-            <h3 className="text-green-400 font-semibold mb-3 text-lg flex items-center gap-2">
-              <Settings className="w-5 h-5" /> AI Suggestions
-            </h3>
-            {aiLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <motion.div
-                  className="w-10 h-10 rounded-full border-4 border-green-400 border-t-transparent animate-spin"
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                />
-                <span className="ml-4 text-white/70">Generating personalized recommendations...</span>
-              </div>
-            ) : (
-              <p className="text-white/80 text-base leading-relaxed">{aiSuggestion}</p>
+          
+          {/* Wind Speed AI Suggestion reply in left panel, scrollable chat area */}
+          <div className="flex-1 overflow-y-auto">
+            {aiSuggestion && (
+              <motion.div
+                className="mt-8 bg-gradient-to-r from-green-400/10 to-cyan-400/10 border border-green-400/20 rounded-2xl p-6 shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+              >
+                <h3 className="text-green-400 font-semibold mb-3 text-lg flex items-center gap-2">
+                  Wind Speed:
+                </h3>
+                <p className="text-[#224b32] text-base leading-relaxed">{aiSuggestion}</p>
+              </motion.div>
             )}
-          </motion.div>
-          */}
+          </div>
+         
         </motion.div>
       </div>
 
@@ -484,15 +443,54 @@ export default function PersonalMainDashboard() {
             transition={{ duration: 4, repeat: Infinity }}
           />
         </div>
-        {/* Right Panel: Text box for user input */}
-        <div className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] relative">
-          <div className="absolute bottom-0 left-0 w-full p-6">
-            <input
-              type="text"
-              className="w-full px-4 py-3 rounded-full border border-[#143726]/30 focus:outline-none focus:ring-2 focus:ring-[#143726]/40 bg-white/80 text-[#143726] shadow-lg"
-              placeholder="Type your message..."
-            />
+        {/* Right Panel: Chat UI */}
+        <div className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] relative flex-col">
+          <div className="flex-1 relative">
+            <div className="overflow-y-auto p-6 space-y-4" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+              {chatMessages.length === 0 && (
+                <div className="text-[#143726]/60 text-center mt-20">Start a conversation with <span className="font-bold text-[#224b32]">Wind Speed</span>!</div>
+              )}
+              {chatMessages.map((msg, idx) => (
+                <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl shadow ${msg.sender === 'user' ? 'bg-white text-[#143726]' : 'bg-gradient-to-r from-green-400/20 to-cyan-400/20 text-[#224b32] border border-green-400/30'}`}>
+                    {msg.sender === 'ai' && (
+                      <span className="font-bold text-green-600 mr-2">Wind Speed:</span>
+                    )}
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {chatLoading && (
+                <div className="flex justify-start">
+                  <div className="max-w-[70%] px-4 py-2 rounded-2xl shadow bg-gradient-to-r from-green-400/20 to-cyan-400/20 text-[#224b32] border border-green-400/30 animate-pulse">
+                    <span className="font-bold text-green-600 mr-2">Wind Speed:</span>
+                    Generating reply...
+                  </div>
+                </div>
+              )}
+            </div>
+            {/* Added missing closing div for chat area */}
           </div>
+          <form
+            className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#e6f7f1] to-transparent"
+            onSubmit={e => { e.preventDefault(); handleSendChat(); }}
+          >
+            <div className="flex gap-2">
+              <input
+                type="text"
+                className="w-full px-4 py-3 rounded-full border border-[#143726]/30 focus:outline-none focus:ring-2 focus:ring-[#143726]/40 bg-white/80 text-[#143726] shadow-lg"
+                placeholder="Type your message..."
+                value={chatInput}
+                onChange={e => setChatInput(e.target.value)}
+                disabled={chatLoading}
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-full bg-[#c0e57b] text-[#224b32] font-bold shadow border border-[#224b32] hover:bg-[#c0e57b]/90 transition-colors"
+                disabled={chatLoading || !chatInput.trim()}
+              >Send</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
