@@ -24,8 +24,15 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ messages, input, loading, onInput
   }, [messages, loading]);
 
   return (
-    <div className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] relative flex-col">
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+    <div
+      className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] flex flex-col"
+      style={{ '--input-area-height': '88px' } as React.CSSProperties}
+    >
+      {/* Reply container: scrollable, never overlaps input */}
+      <div
+        className="overflow-y-auto p-6 space-y-4"
+        style={{ maxHeight: 'calc(100vh - var(--input-area-height))' }}
+      >
         {messages.length === 0 && (
           <div className="text-[#143726]/60 text-center mt-20">Start a conversation with <span className="font-bold text-[#224b32]">Wind Speed</span>!</div>
         )}
@@ -50,13 +57,14 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ messages, input, loading, onInput
         <div ref={messagesEndRef} />
       </div>
       <form
-        className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#e6f7f1] to-transparent"
+        className="w-full p-6 bg-white z-10 shadow-lg"
+        style={{ position: 'sticky', bottom: 0, height: 'var(--input-area-height)' }}
         onSubmit={e => { e.preventDefault(); onSend(); }}
       >
         <div className="flex gap-2">
           <input
             type="text"
-            className="w-full px-4 py-3 rounded-full border border-[#143726]/30 focus:outline-none focus:ring-2 focus:ring-[#143726]/40 bg-white/80 text-[#143726] shadow-lg"
+            className="w-full px-4 py-3 rounded-full border border-[#143726]/30 focus:outline-none focus:ring-2 focus:ring-[#143726]/40 bg-white text-[#143726] shadow"
             placeholder="Type your message..."
             value={input}
             onChange={e => onInputChange(e.target.value)}

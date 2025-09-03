@@ -2,8 +2,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import SidePanel from '@/components/SidePanel';
 import { v4 as uuidv4 } from 'uuid';
-import { Wind, User, LogOut, MapPin, Zap, TrendingUp, Settings, Star, Pencil, Save } from 'lucide-react';
+import { Wind, User, LogOut, MapPin, Zap, TrendingUp, Settings, Star, Pencil, Save, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
@@ -26,14 +27,10 @@ interface User {
 
 export default function PersonalMainDashboard() {
   // General handler for edit changes
-  const handleEditChange = (field: string, value: any) => {
-    setEditData((prev) => ({ ...prev, [field]: value }));
-  };
+  // Removed edit handler
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [editData, setEditData] = useState<User['onboardingData'] | null>(null);
-  const [saving, setSaving] = useState(false);
+  // Removed edit feature: no editMode, editData, saving state
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   // Chat state for right panel
@@ -88,7 +85,7 @@ export default function PersonalMainDashboard() {
           return;
         }
         setUser(data.user);
-        setEditData(data.user.onboardingData);
+  // Removed setEditData
       })
       .catch(() => {
         router.push('/login');
@@ -172,331 +169,111 @@ export default function PersonalMainDashboard() {
     </div>
   );
 
-  // Handle input changes in edit mode
-  // Helper for nested location
-  const handleEditLocation = (key: string, value: string) => {
-    setEditData((prev) => ({
-      ...prev,
-      location: { ...prev?.location, [key]: value },
-    }));
-  };
+  // Removed edit handlers
 
   return (
-    <div className="min-h-screen bg-[#ecf4ef] flex flex-col">
-      {/* Top Navigation Bar - stretches end to end */}
-      <nav className="bg-white/10 backdrop-blur-xl border-b-2 border-[#244830]/40 p-4 w-full">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <Wind className="w-8 h-8 text-[#c0e57b]" />
-              <span className="text-xl font-bold text-[#224b32]">Wind Speed</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setEditMode((e) => !e)}
-          className={`flex items-center space-x-2 text-[#224b32] hover:text-[#224b32] px-4 py-2 rounded-full border border-[#224b32] transition-colors bg-[#c0e57b] hover:bg-[#c0e57b]/90 ${editMode ? 'bg-[#c0e57b]/40' : ''}`}
-              disabled={saving}
-            >
-              {editMode ? <Save className="w-5 h-5" /> : <Pencil className="w-5 h-5" />}
-              <span>{editMode ? (saving ? 'Saving...' : 'Save') : 'Edit'}</span>
-            </button>
-            <button
-              onClick={handleLogout}
-          className="flex items-center space-x-2 text-[#224b32] hover:text-[#224b32] px-4 py-2 rounded-full border border-[#224b32] transition-colors bg-[#c0e57b] hover:bg-[#c0e57b]/90"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Logout</span>
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <div className="flex flex-row flex-1 min-h-0">
+    <div className="h-screen bg-[#ecf4ef] flex flex-row overflow-hidden">
+      {/* SidePanel: fixed left */}
+      <SidePanel />
+      {/* Main Content: Dashboard and Chat, side by side */}
+      <div className="flex flex-row w-full ml-56 h-full">
         {/* Left Panel: Dashboard */}
-        <div className="w-full md:w-2/3 lg:w-3/5 border-r border-[#244830]/20 min-h-full flex flex-col">
-          <div className="max-w-7xl mx-auto p-8 text-[#244830] flex flex-col h-full">
-        <motion.div
-          className="bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-2xl p-8 text-[#244830] flex flex-col h-full"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center space-x-4 mb-6">
-            <motion.div
-              className="bg-gradient-to-r from-accent to-bg p-3 rounded-xl"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 120 }}
-            >
-              <User className="w-8 h-8 text-white" />
-            </motion.div>
-            <div>
-              <h1 className="text-3xl font-bold text-[#244830] mb-1">Hello, {user?.name || 'User'} </h1>
-              <p className="text-[#244830]/70 text-lg">Here's your personalized dashboard</p>
-              {editMode ? (
-                <div className="flex gap-2 mt-2">
-                  <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
-                    placeholder="City"
-                    value={editData?.location?.city || ''}
-                    onChange={e => handleEditLocation('city', e.target.value)}
-                  />
-                  <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
-                    placeholder="Country"
-                    value={editData?.location?.country || ''}
-                    onChange={e => handleEditLocation('country', e.target.value)}
-                  />
-                  <input
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm"
-                    placeholder="ZIP"
-                    value={editData?.location?.zipCode || ''}
-                    onChange={e => handleEditLocation('zipCode', e.target.value)}
-                  />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="p-8 text-[#244830] flex flex-col h-full overflow-hidden">
+            {/* Greeting, subtitle, and stat cards styled like reference */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-2">
+                <h1 className="text-4xl font-bold text-[#1a2233]">Hello, {user?.name || 'User'}</h1>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#1a2233] text-base font-medium">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                  <span className="inline-flex items-center justify-center w-8 h-8 bg-[#f5f7fa] rounded-full border border-[#e6e6e6]">
+                    <svg width="20" height="20" fill="none" stroke="#1a2233" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M16 3v4M4 3v4"/></svg>
+                  </span>
                 </div>
-              ) : (
-                user?.onboardingData?.location && (
-                  <motion.p
-                    className="text-[#244830]/50 text-sm mt-1"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    {user.onboardingData.location.city ? `${user.onboardingData.location.city}, ` : ''}
-                    {user.onboardingData.location.country || ''}
-                    {user.onboardingData.location.zipCode ? ` • ${user.onboardingData.location.zipCode}` : ''}
-                  </motion.p>
-                )
+              </div>
+              <p className="text-[#7a869a] text-lg font-normal">Track your natural resources here</p>
+            </div>
+            {/* Stat cards row with dividers */}
+            <div className="flex items-center justify-between bg-white rounded-xl border border-[#e6e6e6] px-2 py-4 mb-10">
+              {/* Finished */}
+              <div className="flex flex-1 flex-col items-center justify-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 bg-[#f5f7fa] rounded-full mb-2">
+                  <User className="w-7 h-7 text-[#224b32]" />
+                </span>
+                <div className="font-semibold text-lg text-[#1a2233]">Finished</div>
+                <div className="font-bold text-2xl text-[#1a2233]">{user?.onboardingData?.goals?.length || 18}</div>
+                <div className="text-xs text-green-500 mt-1">+8 tasks</div>
+              </div>
+              <div className="h-12 w-px bg-[#e6e6e6] mx-4" />
+              {/* Tracked */}
+              <div className="flex flex-1 flex-col items-center justify-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 bg-[#f5f7fa] rounded-full mb-2">
+                  <Wind className="w-7 h-7 text-[#224b32]" />
+                </span>
+                <div className="font-semibold text-lg text-[#1a2233]">Tracked</div>
+                <div className="font-bold text-2xl text-[#1a2233]">{user?.onboardingData?.currentUsage || 31}h</div>
+                <div className="text-xs text-red-500 mt-1">-6 hours</div>
+              </div>
+              <div className="h-12 w-px bg-[#e6e6e6] mx-4" />
+              {/* Efficiency */}
+              <div className="flex flex-1 flex-col items-center justify-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 bg-[#f5f7fa] rounded-full mb-2">
+                  <TrendingUp className="w-7 h-7 text-[#224b32]" />
+                </span>
+                <div className="font-semibold text-lg text-[#1a2233]">Efficiency</div>
+                <div className="font-bold text-2xl text-[#1a2233]">{user?.onboardingData?.energyType ? '93%' : '93%'}</div>
+                <div className="text-xs text-green-500 mt-1">+12%</div>
+              </div>
+            </div>
+            {/* ...existing code for goals, chat, etc. ... */}
+            {/* Wind Speed AI Suggestion reply in left panel, scrollable chat area */}
+            <div className="flex-1 overflow-y-auto">
+              {aiSuggestion && (
+                <div className="mt-8 bg-gradient-to-r from-accent/10 to-bg/10 border border-accent/20 rounded-2xl p-6 shadow-lg">
+                  <h3 className="text-green-400 font-semibold mb-3 text-lg flex items-center gap-2">
+                    Wind Speed:
+                  </h3>
+                  <p className="text-[#224b32] text-base leading-relaxed">{aiSuggestion}</p>
+                </div>
               )}
             </div>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <MapPin className="w-6 h-6 text-green-400 animate-bounce" />
-                <h3 className="text-[#244830] font-semibold">Location Analysis</h3>
-              </div>
-              {editMode ? (
-                <div className="flex gap-2">
-                  <input
-                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
-                    placeholder="City"
-                    value={editData?.location?.city || ''}
-                    onChange={e => handleEditChange('location', { ...editData?.location, city: e.target.value })}
-                  />
-                  <input
-                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
-                    placeholder="Country"
-                    value={editData?.location?.country || ''}
-                    onChange={e => handleEditChange('location', { ...editData?.location, country: e.target.value })}
-                  />
-                  <input
-                    className="bg-white/10 border border-[#244830] rounded px-2 py-1 text-[#244830] text-sm"
-                    placeholder="ZIP"
-                    value={editData?.location?.zipCode || ''}
-                    onChange={e => handleEditChange('location', { ...editData?.location, zipCode: e.target.value })}
-                  />
-                </div>
-              ) : (
-                <p className="text-[#244830]/70">
-                  {user?.onboardingData?.location?.country
-                    ? `Based on conditions near ${user.onboardingData.location.city || 'your area'}, ${user.onboardingData.location.country}.`
-                    : 'Your renewable energy potential analysis is complete.'}
-                </p>
-              )}
-            </motion.div>
-
-            <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <Zap className="w-6 h-6 text-yellow-400 animate-pulse" />
-                <h3 className="text-[#244830] font-semibold">Efficiency Recommendations</h3>
-              </div>
-              {editMode ? (
-                <div>
-                  <select
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm mb-2 w-full"
-                    value={editData?.propertyType || ''}
-                    onChange={e => handleEditChange('propertyType', e.target.value)}
-                  >
-                    <option value="">Select Property Type</option>
-                    <option value="house">Single Family House</option>
-                    <option value="apartment">Apartment/Condo</option>
-                    <option value="farm">Farm/Rural Property</option>
-                    <option value="business">Small Business</option>
-                  </select>
-                  <label className="block text-[#244830]/70 text-sm mb-1">Energy Types</label>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {['wind','tidal','solar','hydroelectric'].map(type => (
-                      <button
-                        key={type}
-                        type="button"
-                        className={`px-3 py-1 rounded-full border ${editData?.energyType?.includes(type) ? 'bg-green-400/20 border-green-400 text-white' : 'bg-white/10 border-white/20 text-white/70'}`}
-                        onClick={() => {
-                          const arr = editData?.energyType || [];
-                          if (arr.includes(type)) {
-                            handleEditChange('energyType', arr.filter(t => t !== type));
-                          } else {
-                            handleEditChange('energyType', [...arr, type]);
-                          }
-                        }}
-                      >
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <p className="text-[#244830]/70">
-                  {Array.isArray(user?.onboardingData?.energyType) && user.onboardingData!.energyType!.length > 0
-                    ? `Focusing on ${user.onboardingData!.energyType!.join(', ')} for your ${user?.onboardingData?.propertyType || 'property'}.`
-                    : 'Personalized suggestions based on your profile.'}
-                </p>
-              )}
-            </motion.div>
-
-            <motion.div
-              className="bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <TrendingUp className="w-6 h-6 text-cyan-400 animate-float" />
-                <h3 className="text-[#244830] font-semibold">Savings Projection</h3>
-              </div>
-              {editMode ? (
-                <div>
-                  <input
-                    type="number"
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm mb-2"
-                    placeholder="Current Usage (kWh/month)"
-                    value={editData?.currentUsage || ''}
-                    onChange={e => handleEditChange('currentUsage', Number(e.target.value))}
-                  />
-                  <select
-                    className="bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm mb-2 w-full"
-                    value={editData?.timeframe || ''}
-                    onChange={e => handleEditChange('timeframe', e.target.value)}
-                  >
-                    <option value="">Select Timeframe</option>
-                    <option value="immediate">Within 3 months</option>
-                    <option value="short">3-6 months</option>
-                    <option value="medium">6-12 months</option>
-                    <option value="long">1+ years</option>
-                  </select>
-                </div>
-              ) : (
-                <p className="text-[#244830]/70">
-                  {typeof user?.onboardingData?.currentUsage === 'number'
-                    ? `Estimated ROI based on ${user.onboardingData!.currentUsage} kWh/month and timeline '${user?.onboardingData?.timeframe || 'N/A'}'.`
-                    : 'Estimated cost savings and ROI calculations.'}
-                </p>
-              )}
-            </motion.div>
-          </div>
-
-          {editMode ? (
-            <motion.div
-              className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <h3 className="text-[#244830] font-semibold mb-3">Your Goals</h3>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {[
-                  { value: 'cost_savings', label: 'Reduce Energy Costs' },
-                  { value: 'environmental', label: 'Environmental Impact' },
-                  { value: 'independence', label: 'Energy Independence' },
-                  { value: 'property_value', label: 'Increase Property Value' },
-                  { value: 'reliability', label: 'Power Reliability' }
-                ].map(goal => (
-                  <button
-                    key={goal.value}
-                    type="button"
-                    className={`px-3 py-1 rounded-full border ${editData?.goals?.includes(goal.value) ? 'bg-green-400/20 border-green-400 text-white' : 'bg-white/10 border-white/20 text-white/70'}`}
-                    onClick={() => {
-                      const arr = editData?.goals || [];
-                      if (arr.includes(goal.value)) {
-                        handleEditChange('goals', arr.filter(g => g !== goal.value));
-                      } else {
-                        handleEditChange('goals', [...arr, goal.value]);
-                      }
-                    }}
-                  >
-                    {goal.label}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          ) : (
-            Array.isArray(user?.onboardingData?.goals) && user!.onboardingData!.goals!.length > 0 && (
-              <motion.div
-                className="mt-8 bg-white/5 rounded-xl p-6 shadow-lg border border-[#244830] text-[#244830]"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <h3 className="text-[#244830] font-semibold mb-3">Your Goals</h3>
-                <div className="flex flex-wrap gap-2">
-                  {user!.onboardingData!.goals!.map((g) => (
-                    <span key={g} className="px-3 py-1 rounded-full bg-gradient-to-r from-accent to-bg text-[#224b32] text-sm border border-white/20 shadow">
-                      {g}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            )
-          )}
-
-          
-          {/* Wind Speed AI Suggestion reply in left panel, scrollable chat area */}
-          <div className="flex-1 overflow-y-auto">
-            {aiSuggestion && (
-              <motion.div
-                className="mt-8 bg-gradient-to-r from-accent/10 to-bg/10 border border-accent/20 rounded-2xl p-6 shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-              >
-                <h3 className="text-green-400 font-semibold mb-3 text-lg flex items-center gap-2">
-                  Wind Speed:
-                </h3>
-                <p className="text-[#224b32] text-base leading-relaxed">{aiSuggestion}</p>
-              </motion.div>
-            )}
-          </div>
-         
-        </motion.div>
-      </div>
-
           {/* Floating animation element */}
-          <motion.div
-            className="fixed top-1/2 right-10 w-4 h-4 bg-green-400 rounded-full opacity-60 z-10"
-            animate={{
-              y: [0, -30, 0],
-              scale: [1, 1.2, 1],
-              opacity: [0.6, 1, 0.6]
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
+          <div className="fixed top-1/2 right-10 w-4 h-4 bg-green-400 rounded-full opacity-60 z-10 animate-bounce" />
         </div>
         {/* Right Panel: Chat UI */}
-        <div className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] relative flex-col">
-          <div className="flex-1 relative">
-            <div className="overflow-y-auto p-6 space-y-4" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+        <div className="hidden md:flex w-1/3 lg:w-2/5 h-full bg-[#e6f7f1] relative flex-col">
+          {/* New Conversation Button */}
+          <div className="p-6 border-b border-[#c0e57b]/30 flex items-center justify-between">
+            <span className="font-bold text-[#224b32] text-lg">Chat</span>
+            <button
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#c0e57b] text-[#224b32] shadow border border-[#224b32] hover:bg-[#c0e57b]/90 transition-colors"
+              title="New Conversation"
+              onClick={() => {
+                setChatMessages([]);
+                setChatInput('');
+                if (!user) {
+                  const newSessionId = uuidv4();
+                  localStorage.setItem('chatSessionId', newSessionId);
+                  setSessionId(newSessionId);
+                }
+                // Save empty conversation to backend
+                fetch('/api/chat', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    userId: user ? user.id : null,
+                    sessionId: !user ? (localStorage.getItem('chatSessionId') || '') : null,
+                    messages: [],
+                  }),
+                });
+              }}
+            >
+              <Plus className="w-6 h-6" />
+            </button>
+          </div>
+          <div className="flex-1 relative overflow-y-auto h-full" style={{ maxHeight: '100vh' }}>
+            <div className="p-6 space-y-4">
               {chatMessages.length === 0 && (
                 <div className="text-[#143726]/60 text-center mt-20">Start a conversation with <span className="font-bold text-[#224b32]">Wind Speed</span>!</div>
               )}

@@ -22,11 +22,16 @@ def main():
 	try:
 		ollama_url = "http://localhost:11434/api/generate"
 		ollama_model = "llama3.2:latest"
-		# Build a context string from onboarding data
 		context = ""
 		if payload.get("onboardingData"):
 			context = f"Onboarding Data: {json.dumps(payload['onboardingData'])}\n"
-		prompt = f"{context}User message: {message}"
+		# System prompt for energy efficiency booster
+		system_prompt = (
+			"You are an expert in energy efficiency for wind speed applications. "
+			"Only answer questions and provide suggestions related to boosting energy efficiency, optimizing wind speed, or saving energy. "
+			"If the user's message is not related to energy efficiency or wind speed, politely refuse to answer."
+		)
+		prompt = f"{system_prompt}\n{context}User message: {message}"
 		ollama_payload = {
 			"model": ollama_model,
 			"prompt": prompt,
