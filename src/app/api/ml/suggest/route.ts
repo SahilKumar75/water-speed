@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 
 export async function POST(request: NextRequest) {
   try {
-    const { onboardingData } = await request.json();
+  const { onboardingData, message } = await request.json();
     const PYTHON_PATH = '/Library/Frameworks/Python.framework/Versions/3.13/bin/python3';
     // Set working directory to project root
     const py = spawn(PYTHON_PATH, [
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       env: process.env,
     });
 
-    py.stdin.write(JSON.stringify(onboardingData));
+  py.stdin.write(JSON.stringify({ onboardingData, message }));
     py.stdin.end();
 
     let result = '';
