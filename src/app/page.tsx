@@ -22,16 +22,24 @@ export default function HomePage() {
         <section className="relative pt-32 pb-20 px-4 overflow-hidden">
           {/* Ocean Wave Animation */}
           <div className="absolute left-0 right-0 bottom-0 h-[320px] min-w-full pointer-events-none z-0">
-            <svg className="absolute left-0 w-full h-full" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path fill="#38bdf8" fillOpacity="0.3">
-                <animate attributeName="d" dur="6s" repeatCount="indefinite"
-                  values="M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
-                  M0,192L60,186.7C120,181,240,160,360,154.7C480,149,600,171,720,186.7C840,203,960,213,1080,202.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
-                  M0,224L60,213.3C120,203,240,181,360,160C480,139,600,117,720,128C840,139,960,181,1080,186.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
-                  M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-                />
-              </path>
-            </svg>
+            <div className="absolute left-0 w-full h-full backdrop-blur-xl">
+              <svg className="w-full h-full" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="oliveWave" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#143726" stopOpacity="0.7" />
+                    <stop offset="100%" stopColor="#143726" stopOpacity="0.4" />
+                  </linearGradient>
+                </defs>
+                <path fill="url(#oliveWave)" fillOpacity="0.5">
+                  <animate attributeName="d" dur="6s" repeatCount="indefinite"
+                    values="M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                      M0,192L60,186.7C120,181,240,160,360,154.7C480,149,600,171,720,186.7C840,203,960,213,1080,202.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                      M0,224L60,213.3C120,203,240,181,360,160C480,139,600,117,720,128C840,139,960,181,1080,186.7C1200,192,1320,160,1380,149.3L1440,139L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z;
+                      M0,160L60,149.3C120,139,240,117,360,128C480,139,600,181,720,186.7C840,192,960,160,1080,154.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+                  />
+                </path>
+              </svg>
+            </div>
           </div>
           {/* Background overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/40 to-primary/80 z-10"></div>
@@ -76,28 +84,16 @@ export default function HomePage() {
                       </motion.button>
                     </Link>
                   ) : (
-                    <>
-                      <Link href="/login">
-                        <motion.button
-                          className="bg-[#c0e57b] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center group"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Login
-                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                      </Link>
-                      <Link href="/register">
-                        <motion.button
-                          className="bg-[#c0e57b] backdrop-blur-lg border border-[#224b32] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg hover:bg-[#c0e57b]/90 transition-all flex items-center justify-center group"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Get Started
-                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                      </Link>
-                    </>
+                    <Link href="/register">
+                      <motion.button
+                        className="bg-[#c0e57b] backdrop-blur-lg border border-[#224b32] px-8 py-4 rounded-xl text-[#224b32] font-semibold text-lg hover:bg-[#c0e57b]/90 transition-all flex items-center justify-center group"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Get Started
+                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </motion.button>
+                    </Link>
                   )}
                 </div>
               </motion.div>
@@ -215,7 +211,7 @@ export default function HomePage() {
                     <div className="bg-gradient-to-r from-green-400 to-cyan-500 w-12 h-12 rounded-xl flex items-center justify-center">
                       <solution.icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-xs text-[#224b32] font-medium px-2 py-1 bg-primary/10 rounded-full">
+                    <span className="text-xs font-medium px-2 py-1 bg-primary/10 rounded-full" style={{ color: '#264a33' }}>
                       {solution.badge}
                     </span>
                   </div>

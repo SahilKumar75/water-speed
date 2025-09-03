@@ -166,8 +166,9 @@ export default function PersonalMainDashboard() {
   };
 
   return (
-  <div className="min-h-screen bg-[#ecf4ef]">
-  <nav className="bg-white/10 backdrop-blur-xl border-b-2 border-[#244830]/40 p-4">
+    <div className="min-h-screen bg-[#ecf4ef] flex flex-col">
+      {/* Top Navigation Bar - stretches end to end */}
+      <nav className="bg-white/10 backdrop-blur-xl border-b-2 border-[#244830]/40 p-4 w-full">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -195,7 +196,10 @@ export default function PersonalMainDashboard() {
         </div>
       </nav>
 
-  <div className="max-w-7xl mx-auto p-8 text-[#244830]">
+      <div className="flex flex-row flex-1 min-h-0">
+        {/* Left Panel: Dashboard */}
+        <div className="w-full md:w-2/3 lg:w-3/5 border-r border-[#244830]/20 min-h-full flex flex-col">
+          <div className="max-w-7xl mx-auto p-8 text-[#244830]">
         <motion.div
           className="bg-[#c0e57b] backdrop-blur-xl border border-[#244830] rounded-2xl p-8 text-[#244830]"
           initial={{ opacity: 0, y: 30 }}
@@ -212,7 +216,7 @@ export default function PersonalMainDashboard() {
               <User className="w-8 h-8 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-3xl font-bold text-[#244830] mb-1">Hello, {user?.name || 'User'} 👋</h1>
+              <h1 className="text-3xl font-bold text-[#244830] mb-1">Hello, {user?.name || 'User'} </h1>
               <p className="text-[#244830]/70 text-lg">Here's your personalized dashboard</p>
               {editMode ? (
                 <div className="flex gap-2 mt-2">
@@ -469,16 +473,28 @@ export default function PersonalMainDashboard() {
         </motion.div>
       </div>
 
-      {/* Floating animation element */}
-      <motion.div
-        className="fixed top-1/2 right-10 w-4 h-4 bg-green-400 rounded-full opacity-60 z-10"
-        animate={{
-          y: [0, -30, 0],
-          scale: [1, 1.2, 1],
-          opacity: [0.6, 1, 0.6]
-        }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
+          {/* Floating animation element */}
+          <motion.div
+            className="fixed top-1/2 right-10 w-4 h-4 bg-green-400 rounded-full opacity-60 z-10"
+            animate={{
+              y: [0, -30, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.6, 1, 0.6]
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+        </div>
+        {/* Right Panel: Text box for user input */}
+        <div className="hidden md:flex w-1/3 lg:w-2/5 min-h-full bg-[#e6f7f1] relative">
+          <div className="absolute bottom-0 left-0 w-full p-6">
+            <input
+              type="text"
+              className="w-full px-4 py-3 rounded-full border border-[#143726]/30 focus:outline-none focus:ring-2 focus:ring-[#143726]/40 bg-white/80 text-[#143726] shadow-lg"
+              placeholder="Type your message..."
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
